@@ -1,0 +1,30 @@
+<div th:replace="fragments/header"></div>
+
+<div th:fragment="sign-up" class="text-center centre-block" >
+    <form class="form-signin">
+        <img class="mb-4" th:src="@{/images/logo.jpeg}" alt="company logo" width="72" height="auto">
+
+        <h1 class="h3 mb-3 font-weight-normal">Sign up</h1>
+
+        <label for="inputFirstName" class="sr-only">First name</label>
+        <input type="email" id="inputFirstName" class="form-control" placeholder="First name" required autofocus>
+
+        <label for="inputLastName" class="sr-only">Last name</label>
+        <input type="email" id="inputLastName" class="form-control" placeholder="Last name" required>
+
+        <label for="inputEmail" class="sr-only">Email address</label>
+        <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required>
+
+        <label for="inputUserName" class="sr-only">User name</label>
+        <input type="email" id="inputUserName" class="form-control" placeholder="User name" required>
+
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+
+        <label for="inputVerifyPassword" class="sr-only">Password</label>
+        <input type="password" id="inputVerifyPassword" class="form-control" placeholder="Verify password" required>
+
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Create Your Free Account</button>
+        <p class="mt-5 mb-3 text-muted">&copy; 2017-2020</p>
+    </form>
+</div>

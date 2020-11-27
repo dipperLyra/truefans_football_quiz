@@ -1,0 +1,29 @@
+<div th:replace="fragments/header"></div>
+
+<div class="card text-center centre-block">
+    <div class="card-header">
+        Question
+    </div>
+    <div class="card-body">
+        <p class="card-text" th:text="${question}"></p>
+        <br>
+        <form method="post" th:action="@{/quiz}" th:object="${question}">
+            <input type="radio" id="optionA" name="option">
+            <label for="optionA" class="card-text" th:text="${option.optionA}"></label>
+
+            <input type="radio" id="optionB" name="option">
+            <label for="optionB" class="card-text" th:text="${option.optionB}"></label>
+
+            <input type="radio" id="optionC" name="option">
+            <label for="optionC" class="card-text" th:text="${option.optionC}"></label>
+
+            <input type="radio" id="optionD" name="option">
+            <label for="optionD" class="card-text" th:text="${option.optionD}"></label>
+            <br>
+            <p><input type="submit" value="Submit" class="btn btn-primary"></p>
+        </form>
+
+    </div>
+    <div class="card-footer text-muted"></div>
+
+</div>
