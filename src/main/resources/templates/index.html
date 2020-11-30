@@ -46,13 +46,13 @@
                     <a class="nav-link" href="#">MWE <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/quiz}">Quiz</a>
+                    <a class="nav-link" th:href="@{/aboutquiz}">Quiz</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">About us</a>
+                    <a class="nav-link" th:href="@{/aboutus}">About us</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Contact us</a>
+                    <a class="nav-link" th:href="@{/contactus}">Contact us</a>
                 </li>
             </ul>
             <form class="form-inline mt-2 mt-md-0">
@@ -78,7 +78,10 @@
                     <div class="carousel-caption text-left">
                         <h1>Welcome to MWE</h1>
                         <p>Best destination for Football Fans contest</p>
-                        <p><a class="btn btn-lg btn-primary" th:href="@{/}" role="button">Sign up today</a></p>
+                        <p>
+                            <a class="btn btn-lg btn-primary" th:href="@{/signup}" role="button">Sign up today</a>
+                            <a class="btn btn-lg btn-primary" th:href="@{/signin}" role="button">Play Now</a>
+                        </p>
                     </div>
                 </div>
             </div>
@@ -88,7 +91,7 @@
                     <div class="carousel-caption">
                         <h1>Welcome to MWE</h1>
                         <p>Win fantastic prizes just by answering few questions about your club</p>
-                        <p><a class="btn btn-lg btn-primary" th:href="@{/}" role="button">Sign up today</a></p>
+                        <p><a class="btn btn-lg btn-primary" th:href="@{/signup}" role="button">Sign up and Play!</a></p>
                     </div>
                 </div>
             </div>
@@ -98,7 +101,7 @@
                     <div class="carousel-caption text-right">
                         <h1>Welcome to MWE</h1>
                         <p>Challenge your knowledge with MWE FOOTBALL FAN CONTEST</p>
-                        <p><a class="btn btn-lg btn-primary" th:href="@{/}" role="button">Sign up today</a></p>
+                        <p><a class="btn btn-lg btn-primary" th:href="@{/signup}" role="button">Sign up and Play!</a></p>
                     </div>
                 </div>
             </div>

@@ -1,19 +1,73 @@
 <div th:replace="fragments/header"></div>
 
 <div th:fragment="sign-in" class="text-center centre-block" >
-    <form class="form-signin">
+    <form action="#" method="post" th:action="@{/auth/signin}" th:object="${user}" class="form-signin">
+        <!--
         <img class="mb-4" th:src="@{/images/logo.jpeg}" alt="" width="72" height="auto">
+        -->
         <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-        <label for="inputEmail" class="sr-only">Email address</label>
-        <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+
+        <label for="inputUsername" class="sr-only">Email address</label>
+        <input type="text" th:field="*{username}" id="inputUsername" class="form-control" placeholder="Username" required autofocus>
+
         <label for="inputPassword" class="sr-only">Password</label>
-        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+        <input type="password" th:field="*{password}" id="inputPassword" class="form-control" placeholder="Password" required>
+
         <div class="checkbox mb-3">
             <label>
                 <input type="checkbox" value="remember-me"> Remember me
             </label>
         </div>
+
+        <span>Do not have an account <a th:href="@{/sign-up}">sign up here</a></span>
+        <br><br>
+
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
         <p class="mt-5 mb-3 text-muted">&copy; 2017-2020</p>
     </form>
 </div>
+
+
+
+<!--<div class="form-signin">
+    <label for="inputUsername" class="sr-only">Email address</label>
+    <input type="text" id="inputUsername" class="form-control" placeholder="Username" required autofocus>
+
+    <label for="inputPassword" class="sr-only">Password</label>
+    <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+
+    <span>Do not have an account <a th:href="@{/sign-up}">sign up here</a></span>
+    <br><br>
+
+    <div>
+        <input type="button" id="btnSave" value="Sign in">
+    </div>
+</div>-->
+
+
+<!--<script>
+    $(function () {
+        $("btnSave").click(function () {
+            var username = $("#inputUsername").val();
+            var password = $("#inputPassword").val();
+
+            $.ajax({
+                cache: true,
+                type: "POST",
+                url: "/auth/signin",
+                contentType: "application/json;charset=UTF-8",
+                data:JSON.stringify({"username":username ,"password" : password}),
+                dataType: "json",
+                async: false,
+                error: function (request) {
+                    console.log("Connection error");
+                },
+                success: function (data) {
+                    //save token
+                    localStorage.setItem("token",data.token);
+                }
+            });
+        });
+    });
+
+</script>-->

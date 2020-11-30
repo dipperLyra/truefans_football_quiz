@@ -7,6 +7,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -29,9 +30,13 @@ public class User {
     private String lastname;
 
     @Email
+    @NotBlank
+    @Size(max = 50)
     private String email;
 
-    private String userName;
+    @NotBlank
+    @Size(max = 20)
+    private String username;
 
     @Column(columnDefinition = "TEXT")
     @NotBlank
@@ -44,7 +49,15 @@ public class User {
     private Set<Role> roles = new HashSet<>();
 
     public User(String username, String email, String password) {
-        this.userName = username;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+    }
+
+    public User(String firstname, String lastname, String username, String email, String password) {
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.username = username;
         this.email = email;
         this.password = password;
     }

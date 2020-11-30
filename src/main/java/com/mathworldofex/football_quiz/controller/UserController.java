@@ -20,27 +20,6 @@ public class UserController {
         this.signUpService = signUpService;
     }
 
-    @GetMapping({"/", "/home"})
-    public String home() {
-        return "index";
-    }
-
-    @GetMapping({"/about", "aboutus", "about-us"})
-    public String aboutUs() {
-        return "misc/about-us";
-    }
-
-    @GetMapping("/contact-us")
-    public String contactUs() {
-        return "misc/contact-us";
-    }
-
-    @GetMapping("/signup")
-    public String signupForm(Model model) {
-        model.addAttribute("user", new User());
-        return "user/sign-up";
-    }
-
     @PostMapping("/signup")
     public String signup(@Valid @RequestBody User user, BindingResult result, Model model) {
         if (result.hasErrors()) {
@@ -52,8 +31,4 @@ public class UserController {
         return "redirect:/index";
     }
 
-    @GetMapping("/signin")
-    public String signin() {
-        return "user/sign-in";
-    }
 }
