@@ -25,6 +25,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.net.URISyntaxException;
+import java.security.Principal;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -65,7 +66,7 @@ public class AuthController {
         cookie.setPath("/");
         cookie.setSecure(true);
         cookie.setHttpOnly(true);
-        cookie.setMaxAge(60 * 60 * 12);
+        cookie.setMaxAge(60 * 3);
         response.addCookie(cookie);
 
         return ResponseEntity.ok(new JwtResponse(jwt,
@@ -105,4 +106,6 @@ public class AuthController {
         mav.addObject("messageHeader", "Sign up status");
         return mav.addObject("message", "Successful: User created!");
     }
+
+
 }

@@ -36,7 +36,7 @@ public class AdminController {
     }
 
     @PostMapping("/answer")
-    public List<Object> createAnswers(@RequestBody List<AnswerRequest> answerQuestions) {
+    public List<Object> createQuestionAns(@RequestBody List<AnswerRequest> answerQuestions) {
         List<Object> response = new ArrayList<>();
 
         for (AnswerRequest answerQuestion : answerQuestions) {

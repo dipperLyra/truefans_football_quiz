@@ -7,7 +7,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 @Controller
 public class QuizController {
@@ -30,12 +29,12 @@ public class QuizController {
         model.addAttribute("question", question.getQuestion());
         model.addAttribute("option", question.getQuestionOption());
 
-         return "quiz/index";
+         return "question";
     }
 
     @PostMapping("/quiz")
     public String submitAnswer(@ModelAttribute Question question, Model model) {
         model.addAttribute("question", question);
-        return "quiz/index";
+        return "question";
     }
 }

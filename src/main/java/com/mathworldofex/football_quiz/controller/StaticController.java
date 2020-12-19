@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @Controller
-public class LandingController {
+public class StaticController {
 
     @GetMapping({"/", "/index", "/home", "/mwe", ""})
     public String home() {
@@ -37,7 +37,7 @@ public class LandingController {
         return "user/sign-up";
     }
 
-    @GetMapping({"/sign-in", "/signin"})
+    @GetMapping({"/sign-in", "/signin", "/login"})
     public String signin(Model model) {
         model.addAttribute("user", new LoginRequest());
         return "user/sign-in";

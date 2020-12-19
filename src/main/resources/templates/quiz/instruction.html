@@ -1,18 +1,24 @@
 <div th:replace="fragments/header"></div>
 
-<div>
-    <p>
-        <span>About this quiz ...</span>
-    </p>
+<div class="row margin-top-1">
+    <div class="col">
+        <div class="card text-center centre-block">
+            <div class="card-header">Instructions</div>
+
+            <div class="card-body">
+                <p>About this quiz ...</p>
+                <p>Please, adhere to the following instructions:</p>
+                <ol>
+                    <li>Instruction...</li>
+                    <li>Instruction...</li>
+                    <li>Instruction...</li>
+                </ol>
+                <a class="btn btn-lg btn-success margin-left-1" th:href="@{/play}" role="button">
+                    Play Now
+                </a>
+            </div>
+            <div class="card-footer text-muted">Enjoy!!!</div>
+        </div>
+    </div>
 </div>
 
-<a class="btn btn-lg btn-primary" th:href="@{/signin}" role="button">Play Now</a>
-
-<div>
-    <p>Please, adhere to the following instructions:</p>
-    <ol>
-        <li>Instruction 1</li>
-        <li>Instruction 2</li>
-        <li>Instruction 3</li>
-    </ol>
-</div>

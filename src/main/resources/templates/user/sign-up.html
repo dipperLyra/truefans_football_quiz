@@ -1,11 +1,8 @@
 <div th:replace="fragments/header"></div>
 
-<div th:fragment="sign-up" class="text-center centre-block" >
+<div th:fragment="sign-up" class="text-center centre-block margin-top-1" >
 
     <form action="#" method="post" th:action="@{/auth/signup}" th:object="${user}" class="form-signin">
-<!--
-        <img class="mb-4" th:src="@{/images/logo.jpeg}" alt="company logo" width="72" height="auto">
--->
         <h1 class="h3 mb-3 font-weight-normal">Sign up</h1>
 
         <label for="inputFirstName" class="sr-only">First name</label>
@@ -30,9 +27,7 @@
         <span>Have an account <a th:href="@{/sign-in}">sign in here</a></span>
         <br><br>
 
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Create Your Free Account</button>
-        <p class="mt-5 mb-3 text-muted">&copy; 2017-2020</p>
+        <button class="btn btn-lg btn-success btn-block" type="submit">Create Your Free Account</button>
+        <p class="mt-5 mb-3 text-muted">&copy; 2020</p>
     </form>
-
-
 </div>
