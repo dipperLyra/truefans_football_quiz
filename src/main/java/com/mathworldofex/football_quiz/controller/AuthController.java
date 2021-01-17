@@ -6,27 +6,29 @@ import com.mathworldofex.football_quiz.enity.Role;
 import com.mathworldofex.football_quiz.enity.User;
 import com.mathworldofex.football_quiz.payload.LoginRequest;
 import com.mathworldofex.football_quiz.payload.SignupRequest;
-import com.mathworldofex.football_quiz.payload.response.JwtResponse;
 import com.mathworldofex.football_quiz.repository.RoleRepository;
 import com.mathworldofex.football_quiz.repository.UserRepository;
 import com.mathworldofex.football_quiz.security.service.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.net.URISyntaxException;
-import java.security.Principal;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -49,7 +51,7 @@ public class AuthController {
     JwtUtils jwtUtils;
 
     @PostMapping("/signin")
-    public ResponseEntity<?> authenticateUser(@Valid @ModelAttribute LoginRequest loginRequest, HttpServletResponse response) {
+    public ModelAndView authenticateUser(@Valid @ModelAttribute LoginRequest loginRequest, HttpServletResponse response) {
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
@@ -69,15 +71,11 @@ public class AuthController {
         cookie.setMaxAge(60 * 3);
         response.addCookie(cookie);
 
-        return ResponseEntity.ok(new JwtResponse(jwt,
-                userDetails.getId(),
-                userDetails.getUsername(),
-                userDetails.getEmail(),
-                roles));
+        return new ModelAndView("index");
     }
 
     @PostMapping("/signup")
-    public ModelAndView registerUser(@Valid @ModelAttribute SignupRequest signUpRequest) throws URISyntaxException {
+    public ModelAndView registerUser(@Valid @ModelAttribute SignupRequest signUpRequest) {
         ModelAndView  mav = new ModelAndView("user/message");
 
         if (userRepository.existsByUsername(signUpRequest.getUsername()))
@@ -93,12 +91,15 @@ public class AuthController {
                 signUpRequest.getEmail(),
                 encoder.encode(signUpRequest.getPassword()));
 
-        Set<String> strRoles = Collections.singleton("user");
         Set<Role> roles = new HashSet<>();
 
-        Role userRole = roleRepository.findByName(ERole.ROLE_UNPAID_USER)
-                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-        roles.add(userRole);
+        Optional<Role> roleExists = roleRepository.findByName(ERole.ROLE_UNPAID_USER);
+        if (roleExists.isPresent()) {
+            roles.add(roleExists.get());
+        } else {
+            Role role = roleRepository.save(new Role(ERole.ROLE_UNPAID_USER));
+            roles.add(role);
+        }
 
         user.setRoles(roles);
         userRepository.save(user);
@@ -106,6 +107,5 @@ public class AuthController {
         mav.addObject("messageHeader", "Sign up status");
         return mav.addObject("message", "Successful: User created!");
     }
-
 
 }

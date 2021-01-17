@@ -141,6 +141,9 @@ body {
 .margin-left-1{
     margin-left: 1rem;
 }
+.margin-left-2{
+    margin-left: 2rem;
+}
 .margin-top-1 {
     margin-top: 50px;
 }
@@ -186,5 +189,13 @@ body {
 @media (min-width: 62em) {
     .featurette-heading {
         margin-top: 7rem;
+    }
+}
+
+@media (min-width: 220px) {
+    .margin-centre {
+        clear: both;
+        margin: auto;
+        margin-bottom: 1em;
     }
 }

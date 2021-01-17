@@ -1,29 +1,32 @@
 <div th:replace="fragments/header"></div>
 
-<div class="card text-center centre-block">
-    <div class="card-header">
-        Question
-    </div>
-    <div class="card-body">
-        <p class="card-text" th:text="${question}"></p>
-        <br>
-        <form method="post" th:action="@{/quiz}" th:object="${question}">
-            <input type="radio" id="optionA" name="option">
-            <label for="optionA" class="card-text" th:text="${option.optionA}"></label>
-
-            <input type="radio" id="optionB" name="option">
-            <label for="optionB" class="card-text" th:text="${option.optionB}"></label>
-
-            <input type="radio" id="optionC" name="option">
-            <label for="optionC" class="card-text" th:text="${option.optionC}"></label>
-
-            <input type="radio" id="optionD" name="option">
-            <label for="optionD" class="card-text" th:text="${option.optionD}"></label>
+<div class="row margin-top-1">
+    <div class="card  centre-block">
+        <div class="card-header text-center">
+            Question
+        </div>
+        <div class="card-body">
+            <p class="card-text" id="texter"></p>
+            <p class="card-text" id="question" th:text="${question.question}"></p>
             <br>
-            <p><input type="submit" value="Submit" class="btn btn-primary"></p>
-        </form>
+            <form id="question-form" th:object="${question}"> <!--method="post" th:action="@{/quiz}"-->
+                <input type="radio" id="optionA" th:value="${option.optionA}" name="option">
+                <label for="optionA" class="card-text" id="labelA" th:text="${option.optionA}"></label><br>
 
+                <input type="radio" id="optionB" th:value="${option.optionB}" name="option">
+                <label for="optionB" class="card-text" id="labelB" th:text="${option.optionB}"></label><br>
+
+                <input type="radio" id="optionC" th:value="${option.optionC}" name="option">
+                <label for="optionC" class="card-text" id="labelC" th:text="${option.optionC}"></label><br>
+
+                <input type="radio" id="optionD" th:value="${option.optionD}" name="option">
+                <label for="optionD" class="card-text" id="labelD" th:text="${option.optionD}"></label><br>
+
+                <input type="hidden" id="question-id" th:value="${question.id}">
+                <div class="margin-top-2 text-center">
+                    <input class="btn btn-primary" th:onclick="submitAnswer()" value="Next">
+                </div>
+            </form>
+        </div>
     </div>
-    <div class="card-footer text-muted"></div>
-
 </div>

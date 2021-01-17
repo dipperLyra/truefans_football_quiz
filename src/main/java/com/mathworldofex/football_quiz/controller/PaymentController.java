@@ -7,7 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.security.Principal;
 
@@ -29,8 +28,7 @@ public class PaymentController {
         return restClient.getRequest(paymentVerificationUrl + reference);
     }
 
-    @GetMapping("/play")
-    @ResponseBody
+    @GetMapping("/payment")
     public String checkLogin(Principal principal) {
         if (principal.getName().isEmpty()) {
             return "user/sign-in";

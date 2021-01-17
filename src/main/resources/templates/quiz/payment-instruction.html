@@ -3,23 +3,21 @@
 <div class="row margin-top-1">
     <div class="col">
         <div class="card text-center centre-block">
-            <div class="card-header">Instructions</div>
+            <div class="card-header"><b>Note</b></div>
 
             <div class="card-body">
-                <p>About this quiz ...</p>
-                <p>Please, adhere to the following instructions:</p>
                 <ol>
+                    <li>To play this game the user will have to pay the sum of 500 naira only</li>
                     <li>Instruction...</li>
                     <li>Instruction...</li>
                     <li>Instruction...</li>
                 </ol>
-                <em>Click the button below when you're ready!</em><br>
-                <a class="btn btn-lg btn-success margin-left-1" th:href="@{/quiz}" role="button">
-                    Start game
+                <em><small>This payment is processed with Paystack, therefore, its safety is guaranteed</small></em><br>
+                <a class="btn btn-lg btn-success margin-left-1" th:href="@{/payment}" role="button">
+                    Make payment
                 </a>
             </div>
 
         </div>
     </div>
 </div>
-

@@ -6,7 +6,7 @@
         <div class="col-sm-12 col-lg-7">
             <div class="fluffy-centre">
                 <div class="margin-top-1">
-                    <p class="display-4">Welcome to MWE</p>
+                    <p class="display-4">Welcome to MWE Football Fan Contest</p>
                     <p class="font-weight-bold">Best destination for Football Fan contest</p>
                 </div>
                 <div class="margin-top-2">
@@ -15,7 +15,7 @@
                     <h6>~ How well do you know your club?</h6>
                 </div>
                 <div class="margin-top-2 text-success">
-                    <a class="btn btn-lg btn-success margin-left-1" th:href="@{/signup}" role="button">
+                    <a class="btn btn-lg btn-success margin-left-1" th:href="@{/aboutquiz}" role="button">
                         Challenge your knowledge
                     </a>
                 </div>
@@ -48,17 +48,20 @@
             </div>
         </div>
 
-
-
         <hr class="featurette-divider">
+
+
+
 
         <div class="row featurette">
             <div class="col-md-7">
                 <h2 class="featurette-heading">Original jersey</h2>
                 <p class="lead">Win customised jersey</p>
-                <a class="btn btn-lg btn-success margin-left-1" th:href="@{/signup}" role="button">
-                    Let's play
-                </a>
+                <div class="margin-top-2 margin-bottom-1 margin-left-2">
+                    <a class="btn btn-lg btn-success" th:href="@{/signup}" role="button">
+                        Let's play
+                    </a>
+                </div>
             </div>
             <div class="col-md-5">
                 <img th:src="@{/images/hung-jersey.jpg}" class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500">
@@ -98,7 +101,6 @@
         <hr class="featurette-divider">
 
     </div><!-- /.container -->
-
 
     <footer class="container">
         <p class="float-right"><a href="#">Back to top</a></p>

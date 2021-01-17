@@ -3,10 +3,11 @@ package com.mathworldofex.football_quiz.controller;
 import com.mathworldofex.football_quiz.enity.Answer;
 import com.mathworldofex.football_quiz.enity.Question;
 import com.mathworldofex.football_quiz.enity.QuestionOption;
+import com.mathworldofex.football_quiz.payload.requests.AnswerRequest;
 import com.mathworldofex.football_quiz.repository.AnswerRepository;
 import com.mathworldofex.football_quiz.repository.OptionRepository;
 import com.mathworldofex.football_quiz.repository.QuestionRepository;
-import com.mathworldofex.football_quiz.payload.requests.AnswerRequest;
+import com.mathworldofex.football_quiz.repository.RoleRepository;
 import com.mathworldofex.football_quiz.services.admin.PopulateQuestions;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,17 +23,20 @@ public class AdminController {
     AnswerRepository answerRepository;
     QuestionRepository questionRepository;
     OptionRepository optionRepository;
+    RoleRepository roleRepository;
 
     public AdminController(
             PopulateQuestions questions,
             AnswerRepository answerRepository,
             QuestionRepository questionRepository,
-            OptionRepository optionRepository)
+            OptionRepository optionRepository,
+            RoleRepository roleRepository)
     {
         this.questions = questions;
         this.answerRepository = answerRepository;
         this.questionRepository = questionRepository;
         this.optionRepository = optionRepository;
+        this.roleRepository = roleRepository;
     }
 
     @PostMapping("/answer")
@@ -56,7 +60,6 @@ public class AdminController {
             question.setQuestion(answerQuestion.getQuestion());
             question.setAnswer(answer);
             question.setQuestionOption(option);
-
 
             response.add(questionRepository.save(question));
             response.add(answerRepository.save(answer));

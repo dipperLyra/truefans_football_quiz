@@ -19,6 +19,9 @@ public class PaymentIntegration {
     @Value("${paystack.verification.url}")
     private String paymentVerificationUrl;
 
+    public Boolean paymentStatus() {
+        return true;
+    }
 
     private ResponseEntity<PaystackTranVerResponse> postReference(String reference) {
         String URI = paymentVerificationUrl + reference;
