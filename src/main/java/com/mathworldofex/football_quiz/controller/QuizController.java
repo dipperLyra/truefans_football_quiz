@@ -10,10 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Logger;
 
 @Controller
@@ -77,6 +74,9 @@ public class QuizController {
 
     @PostMapping("/quiz-ans") public @ResponseBody
     Map<String, String> receiveAnswer(@RequestBody SubmitAnswerRequest request, Model model, HttpServletRequest request1) {
+        long startTime = System.currentTimeMillis();
+        long elapsedTime = 0L;
+
         List<String> quizList = (List<String>) request1.getSession().getAttribute("QUIZ_SESSION");
         if (quizList == null) {
             quizList = new ArrayList<>();
@@ -86,18 +86,23 @@ public class QuizController {
         quizList.add(request.getQuestionId());
         request1.getSession().setAttribute("QUIZ_SESSION", quizList);
 
-        if (this.counter <= 10) {
-            boolean correctAnswer = quizService.checkAnswer(Long.valueOf(request.getQuestionId()), request.getAnswer());
+        if (elapsedTime < 3*1000) {
+            if (this.counter <= 10) {
+                boolean correctAnswer = quizService.checkAnswer(Long.valueOf(request.getQuestionId()), request.getAnswer());
 
-            this.counter++;
+                this.counter++;
 
-            if (correctAnswer) {
-                this.score++;
-                LOGGER.info("Correct answer. Score: " + score);
-            } else LOGGER.info("Wrong answer. Score: " + score);
+                if (correctAnswer) {
+                    this.score++;
+                    LOGGER.info("Correct answer. Score: " + score);
+                } else LOGGER.info("Wrong answer. Score: " + score);
 
-            LOGGER.info("counter: " +counter+ " score: " +score);
-        } else gameOver() ;
+                LOGGER.info("counter: " +counter+ " score: " +score);
+            } else gameOver() ;
+
+            elapsedTime = (new Date()).getTime() - startTime;
+        }
+
         return Map.of("result", "Inline changes with ajax");
     }
 

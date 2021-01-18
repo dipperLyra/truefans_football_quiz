@@ -2,7 +2,12 @@ var paymentForm = document.getElementById('paymentForm');
 paymentForm.addEventListener('submit', payWithPaystack, false);
 
 function payment() {
-
+    let amount = $("#amount").val();
+    if (amount !== 500) {
+        $('#myerror').html("Amount should be 500 naira only");
+    } else {
+        payWithPaystack();
+    }
 }
 
 function payWithPaystack() {
