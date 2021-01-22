@@ -11,6 +11,6 @@ public class PaystackTranVerResponse {
 
     private Boolean status;
     private String message;
-    private HashMap<String, PaystackDataResponse> data;
+    private PaystackDataResponse data;
 
 }

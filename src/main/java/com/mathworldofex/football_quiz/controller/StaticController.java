@@ -1,7 +1,7 @@
 package com.mathworldofex.football_quiz.controller;
 
 import com.mathworldofex.football_quiz.enity.User;
-import com.mathworldofex.football_quiz.payload.LoginRequest;
+import com.mathworldofex.football_quiz.payload.requests.LoginRequest;
 import com.mathworldofex.football_quiz.services.quiz.QuizService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -51,7 +51,7 @@ public class StaticController {
         model.addAttribute("user", new LoginRequest());
         return "user/sign-in";
     }
-    @GetMapping("/quiz/init")
+
     public String quizPage(Model model, HttpSession session) {
         @SuppressWarnings("unchecked")
         List<String> quizList = (List<String>) session.getAttribute("QUIZ_SESSION");

@@ -57,14 +57,21 @@
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/contactus}">Contact us</a>
                 </li>
+                <span sec:authorize="hasAuthority('ROLE_ADMIN')">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/quiz/create}">Create question</a>
+                    </li>
+                </span>
             </ul>
             <span sec:authorize="isAnonymous()">
                 <a class="btn btn-lg btn-outline-primary" th:href="@{/signin}" role="button">Log in</a>
                 <a class="btn btn-lg btn-success margin-left-1" th:href="@{/signup}" role="button">Sign up</a>
             </span>
             <span sec:authorize="isAuthenticated()">
+                <span sec:authorize="hasAuthority('ROLE_ADMIN')">
+                    <span>Welcome, Admin</span>
+                </span>
                 <a class="btn btn-lg btn-success margin-left-1" href="/logout">Logout</a>
-                <!--<span>Wellcome, <i sec:authentication="name"></i></span>-->
             </span>
 
         </div>

@@ -2,14 +2,19 @@ package com.mathworldofex.football_quiz.controller;
 
 import com.mathworldofex.football_quiz.enity.Question;
 import com.mathworldofex.football_quiz.payload.requests.SubmitAnswerRequest;
+import com.mathworldofex.football_quiz.services.payment.PaymentIntegrationService;
 import com.mathworldofex.football_quiz.services.quiz.QuizService;
 import javassist.bytecode.stackmap.TypeData;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.net.URISyntaxException;
+import java.security.Principal;
 import java.util.*;
 import java.util.logging.Logger;
 
@@ -22,6 +27,12 @@ public class QuizController {
     private boolean gameover = false;
     private Map<String, String> map = new HashMap<>();
     private static final Logger LOGGER = Logger.getLogger( TypeData.ClassName.class.getName() );
+
+    @Autowired
+    PaymentIntegrationService paymentService;
+
+    @Value("${paystack.verification.url}")
+    private String paymentVerificationUrl;
 
     public QuizController(QuizService quizService) {
         this.quizService = quizService;
@@ -112,4 +123,18 @@ public class QuizController {
     }
 
 
+    @GetMapping("/payment/verify")
+    public String verifyPayment(@RequestParam String reference) throws URISyntaxException {
+        if (paymentService.verifyPayment(reference)) {
+            return "redirect:quiz/instruction";
+        } else return "redirect:quiz/payment-error";
+    }
+
+    @GetMapping("/payment")
+    public String checkLogin(Principal principal) {
+        if (principal.getName().isEmpty()) {
+            return "user/sign-in";
+        }
+        return "payment/paystack-pop-up.html";
+    }
 }

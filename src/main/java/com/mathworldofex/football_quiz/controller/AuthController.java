@@ -4,8 +4,8 @@ import com.mathworldofex.football_quiz.JwtUtils;
 import com.mathworldofex.football_quiz.enity.ERole;
 import com.mathworldofex.football_quiz.enity.Role;
 import com.mathworldofex.football_quiz.enity.User;
-import com.mathworldofex.football_quiz.payload.LoginRequest;
-import com.mathworldofex.football_quiz.payload.SignupRequest;
+import com.mathworldofex.football_quiz.payload.requests.LoginRequest;
+import com.mathworldofex.football_quiz.payload.requests.SignupRequest;
 import com.mathworldofex.football_quiz.repository.RoleRepository;
 import com.mathworldofex.football_quiz.repository.UserRepository;
 import com.mathworldofex.football_quiz.security.service.UserDetailsImpl;
@@ -13,13 +13,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.Cookie;
@@ -27,32 +27,25 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @Controller
-@RequestMapping("/auth")
 public class AuthController {
     @Autowired
     AuthenticationManager authenticationManager;
-
     @Autowired
     UserRepository userRepository;
-
     @Autowired
     RoleRepository roleRepository;
-
     @Autowired
     PasswordEncoder encoder;
-
     @Autowired
     JwtUtils jwtUtils;
 
-    @PostMapping("/signin")
+    @PostMapping("/auth/signin")
     public ModelAndView authenticateUser(@Valid @ModelAttribute LoginRequest loginRequest, HttpServletResponse response) {
-
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
@@ -61,7 +54,7 @@ public class AuthController {
 
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         List<String> roles = userDetails.getAuthorities().stream()
-                .map(item -> item.getAuthority())
+                .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
 
         final Cookie cookie = new Cookie("mwe_user", jwt);
@@ -70,13 +63,12 @@ public class AuthController {
         cookie.setHttpOnly(true);
         cookie.setMaxAge(60 * 3);
         response.addCookie(cookie);
-
         return new ModelAndView("index");
     }
 
-    @PostMapping("/signup")
+    @PostMapping("/auth/signup")
     public ModelAndView registerUser(@Valid @ModelAttribute SignupRequest signUpRequest) {
-        ModelAndView  mav = new ModelAndView("user/message");
+        ModelAndView  mav = new ModelAndView("fragments/message");
 
         if (userRepository.existsByUsername(signUpRequest.getUsername()))
             return mav.addObject("message", "Error: Username is already taken!");
@@ -92,15 +84,9 @@ public class AuthController {
                 encoder.encode(signUpRequest.getPassword()));
 
         Set<Role> roles = new HashSet<>();
-
-        Optional<Role> roleExists = roleRepository.findByName(ERole.ROLE_UNPAID_USER);
-        if (roleExists.isPresent()) {
-            roles.add(roleExists.get());
-        } else {
-            Role role = roleRepository.save(new Role(ERole.ROLE_UNPAID_USER));
-            roles.add(role);
-        }
-
+        Role role = roleRepository.findByName(ERole.ROLE_UNPAID_USER)
+                .orElse(roleRepository.save(new Role(ERole.ROLE_UNPAID_USER)));
+        roles.add(role);
         user.setRoles(roles);
         userRepository.save(user);
 

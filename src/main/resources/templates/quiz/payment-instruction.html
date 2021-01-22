@@ -13,9 +13,17 @@
                     <li>Instruction...</li>
                 </ol>
                 <em><small>This payment is processed with Paystack, therefore, its safety is guaranteed</small></em><br>
-                <a class="btn btn-lg btn-success margin-left-1" th:href="@{/payment}" role="button">
-                    Make payment
-                </a>
+
+                <div sec:authorize="isAnonymous()">
+                    <a class="btn btn-lg btn-success margin-left-1" th:href="@{/signin}" role="button">
+                       Sign in to play
+                    </a>
+                </div>
+                <div sec:authorize="isAuthenticated()">
+                    <a class="btn btn-lg btn-success margin-left-1" th:href="@{/payment}" role="button">
+                        Make payment
+                    </a>
+                </div>
             </div>
 
         </div>

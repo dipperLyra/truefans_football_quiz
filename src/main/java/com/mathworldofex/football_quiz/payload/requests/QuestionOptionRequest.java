@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class AnswerRequest {
+public class QuestionOptionRequest {
     private String answer;
     private String question;
     private String optionA;
@@ -15,7 +15,7 @@ public class AnswerRequest {
     private String optionC;
     private String optionD;
 
-    public AnswerRequest(String optionA, String optionB, String optionC, String optionD) {
+    public QuestionOptionRequest(String optionA, String optionB, String optionC, String optionD) {
         this.optionA = optionA;
         this.optionB = optionB;
         this.optionC = optionC;

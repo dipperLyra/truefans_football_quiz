@@ -1,70 +1,78 @@
 package com.mathworldofex.football_quiz.controller;
 
+import com.mathworldofex.football_quiz.JwtUtils;
 import com.mathworldofex.football_quiz.enity.Answer;
 import com.mathworldofex.football_quiz.enity.Question;
 import com.mathworldofex.football_quiz.enity.QuestionOption;
-import com.mathworldofex.football_quiz.payload.requests.AnswerRequest;
-import com.mathworldofex.football_quiz.repository.AnswerRepository;
-import com.mathworldofex.football_quiz.repository.OptionRepository;
-import com.mathworldofex.football_quiz.repository.QuestionRepository;
-import com.mathworldofex.football_quiz.repository.RoleRepository;
-import com.mathworldofex.football_quiz.services.admin.PopulateQuestions;
+import com.mathworldofex.football_quiz.payload.requests.QuestionOptionRequest;
+import com.mathworldofex.football_quiz.repository.*;
+import com.mathworldofex.football_quiz.services.admin.PopulateQuestionsService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.validation.Valid;
 
-@RestController
+@Controller
 public class AdminController {
 
-    PopulateQuestions questions;
+    @Autowired
+    AuthenticationManager authenticationManager;
+    @Autowired
+    UserRepository userRepository;
+    @Autowired
+    PasswordEncoder encoder;
+    @Autowired
+    JwtUtils jwtUtils;
+    @Autowired
+    PopulateQuestionsService questions;
+    @Autowired
     AnswerRepository answerRepository;
+    @Autowired
     QuestionRepository questionRepository;
+    @Autowired
     OptionRepository optionRepository;
+    @Autowired
     RoleRepository roleRepository;
 
-    public AdminController(
-            PopulateQuestions questions,
-            AnswerRepository answerRepository,
-            QuestionRepository questionRepository,
-            OptionRepository optionRepository,
-            RoleRepository roleRepository)
-    {
-        this.questions = questions;
-        this.answerRepository = answerRepository;
-        this.questionRepository = questionRepository;
-        this.optionRepository = optionRepository;
-        this.roleRepository = roleRepository;
+    @GetMapping("/admin/quiz/create")
+    public String createQuestionForm(Model model) {
+        model.addAttribute("questions", new QuestionOptionRequest());
+        return "admin/questions/create-question";
     }
 
-    @PostMapping("/answer")
-    public List<Object> createQuestionAns(@RequestBody List<AnswerRequest> answerQuestions) {
-        List<Object> response = new ArrayList<>();
+    @PostMapping("/admin/quiz/create")
+    public String createQuestionAns(@Valid @ModelAttribute QuestionOptionRequest answerQuestion) {
+        ModelAndView mav = new ModelAndView("fragments/message");
+        // Set anwser
+        Answer answer = new Answer();
+        answer.setAnswer(answerQuestion.getAnswer());
 
-        for (AnswerRequest answerQuestion : answerQuestions) {
-            // Set answer
-            Answer answer = new Answer();
-            answer.setAnswer(answerQuestion.getAnswer());
+        // Set options
+        QuestionOption option = new QuestionOption(
+                answerQuestion.getOptionA(),
+                answerQuestion.getOptionB(),
+                answerQuestion.getOptionC(),
+                answerQuestion.getOptionD()
+        );
 
-            // Set options
-            QuestionOption option = new QuestionOption(
-                    answerQuestion.getOptionA(),
-                    answerQuestion.getOptionB(),
-                    answerQuestion.getOptionC(),
-                    answerQuestion.getOptionD());
-
-            // Set question
-            Question question = new Question();
-            question.setQuestion(answerQuestion.getQuestion());
-            question.setAnswer(answer);
-            question.setQuestionOption(option);
-
-            response.add(questionRepository.save(question));
-            response.add(answerRepository.save(answer));
-            response.add(optionRepository.save(option));
+        // Set question
+        Question question = new Question(answerQuestion.getQuestion(), answer, option);
+        try {
+            questionRepository.save(question);
+        } catch (DataAccessException e) {
+            mav.addObject("message", "Error saving question: " + e);
+            return "fragments/message";
         }
-        return response;
+
+        mav.addObject("message", "Question created successfully");
+        return "fragments/message";
     }
 }

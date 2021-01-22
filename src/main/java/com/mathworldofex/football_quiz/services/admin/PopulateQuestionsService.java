@@ -11,13 +11,13 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class PopulateQuestions {
+public class PopulateQuestionsService {
 
     QuestionRepository questionRepo;
     OptionRepository optionRepo;
     AnswerRepository answerRepo;
 
-    public PopulateQuestions(QuestionRepository question, OptionRepository option, AnswerRepository answer) {
+    public PopulateQuestionsService(QuestionRepository question, OptionRepository option, AnswerRepository answer) {
         this.questionRepo = question;
         this.optionRepo = option;
         this.answerRepo = answer;

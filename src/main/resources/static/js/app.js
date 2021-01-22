@@ -18,13 +18,16 @@ function payWithPaystack() {
           amount: 500 * 100,
           currency: 'NGN',
           callback: function(response){
+              window.location = "http://localhost:8030/payment/verify?reference=" + response.reference;
+/*
               $.ajax({
-                  url: 'http://localhost:8030/verify_transaction?reference='+ response.reference,
+                  url: 'http://localhost:8030/payment/verify?reference='+ response.reference,
                   method: 'get',
                   success: function (response) {
-                      console.log(response.data.status)
+                      console.log(response.data)
                   }
               });
+*/
           },
         onClose: function() {
               alert('Transaction was not completed, window closed.');

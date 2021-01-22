@@ -1,4 +1,4 @@
-package com.mathworldofex.football_quiz.payload;
+package com.mathworldofex.football_quiz.payload.requests;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,5 +16,5 @@ public class SignupRequest {
     private String username;
     private String email;
     private String password;
-
+    private String role;
 }

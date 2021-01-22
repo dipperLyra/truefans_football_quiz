@@ -28,6 +28,12 @@ public class Question {
     @OneToOne(cascade = {CascadeType.ALL})
     private QuestionOption questionOption;
 
+    public Question(String question, Answer answer, QuestionOption questionOption) {
+        this.question = question;
+        this.answer = answer;
+        this.questionOption = questionOption;
+    }
+
     //NB: only for debug purposes
     @Override
     public String toString () {

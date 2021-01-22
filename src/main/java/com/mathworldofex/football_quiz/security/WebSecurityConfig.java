@@ -50,9 +50,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        http.exceptionHandling().accessDeniedPage("/login");
         http.csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/auth/signup", "/auth/signin", "/signin", "/login", "/signup", "/role","/", "/styles/**", "/js/**", "/images/**", "/index", "/home", "/mwe","/about-us", "/about", "/aboutus","/about-quiz", "/aboutquiz","/contact-us", "/contactus").permitAll()
+                .antMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
@@ -60,6 +62,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .invalidateHttpSession(true)
                 .and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
