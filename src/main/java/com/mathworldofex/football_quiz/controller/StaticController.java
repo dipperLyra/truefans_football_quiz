@@ -32,7 +32,7 @@ public class StaticController {
 
     @GetMapping({"/about-quiz", "/aboutquiz"})
     public String aboutQuiz() {
-        return "quiz/payment-instruction";
+        return "quiz/pre-instruction";
     }
 
     @GetMapping({"/contact-us", "/contactus"})

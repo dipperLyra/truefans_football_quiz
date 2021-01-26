@@ -1,6 +1,5 @@
 package com.mathworldofex.football_quiz.security;
 
-import com.mathworldofex.football_quiz.security.jwt.AuthEntryPointJwt;
 import com.mathworldofex.football_quiz.security.jwt.AuthTokenFilter;
 import com.mathworldofex.football_quiz.security.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +52,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.exceptionHandling().accessDeniedPage("/login");
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/auth/signup", "/auth/signin", "/signin", "/login", "/signup", "/role","/", "/styles/**", "/js/**", "/images/**", "/index", "/home", "/mwe","/about-us", "/about", "/aboutus","/about-quiz", "/aboutquiz","/contact-us", "/contactus").permitAll()
+                .antMatchers("/auth/signup", "/payment/**", "/auth/signin", "/signin", "/login", "/signup", "/role","/", "/styles/**", "/js/**", "/images/**", "/index", "/home", "/mwe","/about-us", "/about", "/aboutus","/about-quiz", "/aboutquiz","/contact-us", "/contactus").permitAll()
+                //.antMatchers("/payment/**").permitAll()
                 .antMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
                 .anyRequest().authenticated()
                 .and()

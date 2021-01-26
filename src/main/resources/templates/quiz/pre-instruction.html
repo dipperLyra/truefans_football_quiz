@@ -1,0 +1,30 @@
+<div th:replace="fragments/header"></div>
+
+<div class="row margin-top-1">
+    <div class="col">
+        <div class="card text-center centre-block">
+            <div class="card-header"><b>Few instructions to keep in mind</b></div>
+            <div class="card-body">
+                <ol>
+                    <li>Each session involves answering 10 questions in 20 seconds</li>
+                </ol>
+                <br>
+                <div sec:authorize="isAnonymous()">
+                    <a class="btn btn-lg btn-success margin-left-1" th:href="@{/signin}" role="button">
+                       Sign in to play
+                    </a>
+                </div>
+                <div sec:authorize="isAuthenticated()">
+                    <a class="btn btn-lg btn-success margin-left-1" th:href="@{/quiz}" role="button">
+                       Challenge your football knowledge
+                    </a>
+                </div><br>
+                <div sec:authorize="isAuthenticated()">
+                    <a class="margin-left-1" th:href="@{/payment}">Donate to help keep our server running.</a>
+                    <em><small>Payment is processed with <a href="https://www.paystack.com">Paystack</a> , therefore, safety is guaranteed</small></em><br>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

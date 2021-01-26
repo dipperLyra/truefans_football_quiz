@@ -18,7 +18,7 @@ function payWithPaystack() {
           amount: 500 * 100,
           currency: 'NGN',
           callback: function(response){
-              window.location = "http://localhost:8030/payment/verify?reference=" + response.reference;
+//              window.location = "http://localhost:8030/payment/verify?reference=" + response.reference;
 /*
               $.ajax({
                   url: 'http://localhost:8030/payment/verify?reference='+ response.reference,

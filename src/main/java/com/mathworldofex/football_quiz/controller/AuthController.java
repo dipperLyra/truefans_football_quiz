@@ -61,7 +61,6 @@ public class AuthController {
         cookie.setPath("/");
         cookie.setSecure(true);
         cookie.setHttpOnly(true);
-        cookie.setMaxAge(60 * 3);
         response.addCookie(cookie);
         return new ModelAndView("index");
     }
