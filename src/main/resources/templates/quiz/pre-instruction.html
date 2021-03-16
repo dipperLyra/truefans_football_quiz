@@ -7,6 +7,7 @@
             <div class="card-body">
                 <ol>
                     <li>Each session involves answering 10 questions in 20 seconds</li>
+                    <li>You are required to make a token payment of 500 naira only.</li>
                 </ol>
                 <br>
                 <div sec:authorize="isAnonymous()">
@@ -15,14 +16,12 @@
                     </a>
                 </div>
                 <div sec:authorize="isAuthenticated()">
-                    <a class="btn btn-lg btn-success margin-left-1" th:href="@{/quiz}" role="button">
+<!--                    <a class="btn btn-lg btn-success margin-left-1" th:href="@{/payment}" role="button">-->
+                    <a class="btn btn-lg btn-success margin-left-1" th:href="@{/payment}" role="button">
                        Challenge your football knowledge
-                    </a>
+                    </a><br><br>
+                    <em><small>All payments are processed with <a href="https://www.paystack.com">Paystack</a> , therefore, your safety is guaranteed</small></em>
                 </div><br>
-                <div sec:authorize="isAuthenticated()">
-                    <a class="margin-left-1" th:href="@{/payment}">Donate to help keep our server running.</a>
-                    <em><small>Payment is processed with <a href="https://www.paystack.com">Paystack</a> , therefore, safety is guaranteed</small></em><br>
-                </div>
             </div>
 
         </div>

@@ -1,61 +1,58 @@
 var paymentForm = document.getElementById('paymentForm');
 paymentForm.addEventListener('submit', payWithPaystack, false);
 
-function payment() {
-    let amount = $("#amount").val();
-    if (amount !== 500) {
-        $('#myerror').html("Amount should be 500 naira only");
-    } else {
-        payWithPaystack();
-    }
-}
-
 function payWithPaystack() {
-
     var handler = PaystackPop.setup({
           key: 'pk_test_d2bbd368bc37028cf44ebebaffed3479c4e86e42',
           email: document.getElementById('email').value,
           amount: 500 * 100,
           currency: 'NGN',
           callback: function(response){
-//              window.location = "http://localhost:8030/payment/verify?reference=" + response.reference;
-/*
-              $.ajax({
-                  url: 'http://localhost:8030/payment/verify?reference='+ response.reference,
-                  method: 'get',
-                  success: function (response) {
-                      console.log(response.data)
-                  }
-              });
-*/
+              window.location = 'http://localhost:8030/payment/verify?reference='+ response.reference;
           },
-        onClose: function() {
+          onClose: function() {
               alert('Transaction was not completed, window closed.');
-            },
+              },
       });
       handler.openIframe();
+}
+
+function questionSetUp() {
+    let category = $("#formControlLeague").val();
+    let subCategory = $("#formControlClub").val();
+    let requestBody = JSON.stringify({category:"EPL", subCategory:"Chelsea"})
+    console.log("Category : " + category + " sub-category: " + subCategory);
+
+    $.ajax({
+        url: 'http://localhost:8030/quiz/setup',
+        contentType: "application/json",
+        method: 'post',
+        dataType: 'json',
+        data: requestBody,
+        success: function(){console.log("Successful question setup!")}
+    })
 }
 
 function submitAnswer() {
     let answer = $('input[name="option"]:checked').val();
     let questionId = $('#question-id').val();
-    let request = JSON.stringify({answer: answer, questionId: questionId}) ;
+    let requestBody = JSON.stringify({answer: answer, questionId: questionId}) ;
 
     $.ajax({
-        url: 'http://localhost:8030/quiz-ans',
+        url: 'http://localhost:8030/quiz/answer',
         contentType: "application/json",
         method: 'post',
         dataType: 'json',
-        data: request,
+        data: requestBody,
         success: function() {
-            $.get('http://localhost:8030/quiz-ans', function (response) {
-                displayNextQuestion(response);
+            $.get('http://localhost:8030/quiz/answer', function (response) {
+                displayNext(response);
             });
         }
     })
 }
 
-function displayNextQuestion(response) {
+function displayNext(response) {
     if (!response.gameover) {
         $('#question-id').val(response.question.id)
         $('#question').html(response.question.question);

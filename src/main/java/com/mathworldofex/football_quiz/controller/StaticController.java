@@ -1,17 +1,13 @@
 package com.mathworldofex.football_quiz.controller;
 
-import com.mathworldofex.football_quiz.enity.User;
-import com.mathworldofex.football_quiz.payload.requests.LoginRequest;
+import com.mathworldofex.football_quiz.model.entity.User;
+import com.mathworldofex.football_quiz.model.payload.requests.LoginRequest;
 import com.mathworldofex.football_quiz.services.quiz.QuizService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-
-import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @Controller
@@ -52,11 +48,4 @@ public class StaticController {
         return "user/sign-in";
     }
 
-    public String quizPage(Model model, HttpSession session) {
-        @SuppressWarnings("unchecked")
-        List<String> quizList = (List<String>) session.getAttribute("QUIZ_SESSION");
-
-        model.addAttribute("quizSession", quizList!=null? quizList:new ArrayList<>());
-        return "quiz/instruction";
-    }
 }

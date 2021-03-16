@@ -1,11 +1,11 @@
 package com.mathworldofex.football_quiz.services.admin;
 
-import com.mathworldofex.football_quiz.enity.Answer;
-import com.mathworldofex.football_quiz.enity.Question;
-import com.mathworldofex.football_quiz.enity.QuestionOption;
-import com.mathworldofex.football_quiz.repository.AnswerRepository;
-import com.mathworldofex.football_quiz.repository.OptionRepository;
-import com.mathworldofex.football_quiz.repository.QuestionRepository;
+import com.mathworldofex.football_quiz.model.entity.Answer;
+import com.mathworldofex.football_quiz.model.entity.Question;
+import com.mathworldofex.football_quiz.model.entity.QuestionOption;
+import com.mathworldofex.football_quiz.model.repository.AnswerRepository;
+import com.mathworldofex.football_quiz.model.repository.OptionRepository;
+import com.mathworldofex.football_quiz.model.repository.QuestionRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

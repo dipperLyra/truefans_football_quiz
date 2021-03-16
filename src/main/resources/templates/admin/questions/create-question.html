@@ -1,28 +1,65 @@
 <div th:replace="fragments/header"></div>
 
-<div th:fragment="sign-up" class="text-center centre-block margin-top-1" >
-    <form action="#" method="post" th:action="@{/admin/quiz/create}" th:object="${questions}" class="form-signin">
-        <h1 class="h3 mb-3 font-weight-normal">Create question</h1>
+<div class="container margin-top-1" th:object="${question}">
+    <div class="row">
+        <div class="col-lg">
+            <form action="#" method="post" th:action="@{/admin/quiz/create}"  class="form-signin" id="inputQuestionForm">
+                <h1 class="h3 mb-3 font-weight-normal">Create question</h1>
 
-        <label for="inputQuestion" class="sr-only" id="labelQuestion">Question</label><br>
-        <input type="text" th:field="*{question}" id="inputQuestion" class="form-control" placeholder="Enter question" required autofocus name="question"><br>
+                <label for="inputQuestion" class="sr-only" id="labelQuestion">Question</label><br>
+                <input type="text" th:field="*{question}" id="inputQuestion" class="form-control" placeholder="Enter question" required autofocus name="question">
 
-        <label for="inputAnswer" class="sr-only" id="labelAnswer">Answer</label>
-        <input type="text" th:field="*{answer}" id="inputAnswer" class="form-control" placeholder="Enter correct answer" required name="answer">
+                <div class="form-group"><br>
+                    <select th:field="*{category}" class="form-control" form="inputQuestionForm">
+                        <option value="0">Choose a category</option>
+                        <option th:each="category : ${categories}" th:value="${category.category}" th:text="${category.category}"></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <select th:field="*{subCategory}" class="form-control" id="formControlClub" form="inputQuestionForm">
+                        <option value="0">Choose a sub-category</option>
+                        <option th:each="subCategory : ${subcategories}" th:value="${subCategory.subCategory}"  th:text="${subCategory.subCategory}"></option>
+                    </select>
+                </div>
 
-        <label for="inputOptionA" class="sr-only" id="labelA">Option A</label><br>
-        <input type="text" th:field="*{optionA}" id="inputOptionA" class="form-control" placeholder="Enter option A" required name="optionA">
+                <label for="inputAnswer" class="sr-only" id="labelAnswer">Answer</label><br>
+                <input type="text" th:field="*{answer}" id="inputAnswer" class="form-control" placeholder="Enter correct answer" required name="answer">
 
-        <label for="inputOptionB" class="sr-only" id="labelB">Option B</label><br>
-        <input type="text" th:field="*{optionB}" id="inputOptionB" class="form-control" placeholder="Enter option B" required name="optionB">
+                <label for="inputOptionA" class="sr-only" id="labelA">Option A</label><br>
+                <input type="text" th:field="*{optionA}" id="inputOptionA" class="form-control" placeholder="Enter option A" required name="optionA">
 
-        <label for="inputOptionC" class="sr-only" id="labelC">Option C</label><br>
-        <input type="text" th:field="*{optionC}" id="inputOptionC" class="form-control" placeholder="Enter option C" required name="optionC">
+                <label for="inputOptionB" class="sr-only" id="labelB">Option B</label><br>
+                <input type="text" th:field="*{optionB}" id="inputOptionB" class="form-control" placeholder="Enter option B" required name="optionB">
 
-        <label for="inputOptionD" class="sr-only" id="labelD">Option D</label><br>
-        <input type="text" th:field="*{optionD}" id="inputOptionD" class="form-control" placeholder="Enter option D" required name="optionD"><br>
+                <label for="inputOptionC" class="sr-only" id="labelC">Option C</label><br>
+                <input type="text" th:field="*{optionC}" id="inputOptionC" class="form-control" placeholder="Enter option C" required name="optionC">
 
-        <button class="btn btn-lg btn-success btn-block" type="submit">Create Question</button>
-        <p class="mt-5 mb-3 text-muted">&copy; 2020</p>
-    </form>
+                <label for="inputOptionD" class="sr-only" id="labelD">Option D</label><br>
+                <input type="text" th:field="*{optionD}" id="inputOptionD" class="form-control" placeholder="Enter option D" required name="optionD"><br>
+
+                <button class="btn btn-lg btn-success btn-block" type="submit">Create Question</button>
+            </form>
+        </div>
+
+        <div class="col-lg">
+            <form action="#" method="post" th:action="@{/admin/question/category}"  class="form-signin">
+                <h1 class="h3 mb-3 font-weight-normal">Create Category</h1>
+
+                <label for="inputCategory" class="sr-only" id="labelCategory">Category</label><br>
+                <input type="text" th:field="*{category}" id="inputCategory" class="form-control" placeholder="Enter category" required name="category"><br>
+
+                <button class="btn btn-lg btn-success btn-block" type="submit">Create Category</button>
+            </form>
+            <form action="#" method="post" th:action="@{/admin/question/subcategory}" class="form-signin">
+                <h1 class="h3 mb-3 font-weight-normal">Create Subcategory</h1>
+
+                <label for="inputSubCategory" class="sr-only" id="labelSubCategory">Sub-category</label><br>
+                <input type="text" th:field="*{subCategory}" id="inputSubCategory" class="form-control" placeholder="Enter subcategory" required name="subCategory"><br>
+
+                <button class="btn btn-lg btn-success btn-block" type="submit">Create Subcategory</button>
+            </form>
+        </div>
+
+    </div>
 </div>
+

@@ -2,23 +2,34 @@
 
 <div class="row margin-top-1">
     <div class="col">
-        <div class="card text-center centre-block">
-            <div class="card-header">Instructions</div>
-
+        <div class="card">
             <div class="card-body">
-                <p>About this quiz ...</p>
-                <p>Please, adhere to the following instructions:</p>
+                <p class="font-weight-bold">Please, adhere to the following instructions:</p>
                 <ol>
-                    <li>Instruction...</li>
-                    <li>Instruction...</li>
-                    <li>Instruction...</li>
+                    <li>You are expected to specify below the club and league you want questions to be taken from</li>
+                    <li>You are expected to click next when you have selected an option in order to go the next question</li>
                 </ol>
-                <em>Click the button below when you're ready!</em><br>
-                <a class="btn btn-lg btn-success margin-left-1" th:href="@{/quiz}" role="button">
-                    Start game
-                </a>
-            </div>
+                <p><span class="text-primary">Note</span>: the question will be a mixture of club and league questions. Though, club questions will appear more. </p>
 
+                <form action="#" method="post" th:action="@{/quiz/setup}" th:object="${quizSetup}" class="form-signin" id="quizSetupForm">
+                    <div class="form-group"><br>
+                        <select th:field="*{category}" class="form-control" form="quizSetupForm">
+                            <option value="0">Choose a league</option>
+                            <option th:each="category : ${categories}" th:value="${category.category}" th:text="${category.category}"></option>
+                        </select>
+                    </div>
+                    <div class="form-group"><br>
+                        <select th:field="*{subCategory}" class="form-control" form="quizSetupForm">
+                            <option value="0">Choose a club</option>
+                            <option th:each="subCategory : ${subCategories}" th:value="${subCategory.subCategory}" th:text="${subCategory.subCategory}"></option>
+                        </select>
+                    </div>
+                    <button class="btn btn-lg btn-success btn-block" type="submit">Start game</button>
+<!--                    <div class="margin-top-2">-->
+<!--                        <input type="submit" th:onclick="questionSetUp()"  class="btn btn-lg btn-success margin-left-1" value="Start game">-->
+<!--                    </div>-->
+                </form>
+            </div>
         </div>
     </div>
 </div>

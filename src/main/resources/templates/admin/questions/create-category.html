@@ -1,0 +1,36 @@
+<div th:replace="fragments/header"></div>
+
+<div  class="text-center centre-block margin-top-1" >
+    <form action="#" method="post" th:action="@{/admin/quiz/create}" th:object="${question}" class="form-signin">
+        <h1 class="h3 mb-3 font-weight-normal">Create question</h1>
+
+        <label for="inputQuestion" class="sr-only" id="labelQuestion">Question</label><br>
+        <input type="text" th:field="*{question}" id="inputQuestion" class="form-control" placeholder="Enter question" required autofocus name="question">
+
+        <label for="inputQuestionCategory" class="sr-only" id="labelQuestionCategory">Question Category</label><br>
+        <input type="text" th:field="*{category}" id="inputQuestionCategory" class="form-control"
+               placeholder="Enter question category" required name="questionCategory">
+
+        <label for="inputQuestionSubCategory" class="sr-only" id="labelQuestionSubCategory">Question Sub-category</label><br>
+        <input type="text" th:field="*{subCategory}" id="inputQuestionSubCategory" class="form-control"
+               placeholder="Enter question sub-category" required name="questionSubCategory">
+
+        <label for="inputAnswer" class="sr-only" id="labelAnswer">Answer</label><br>
+        <input type="text" th:field="*{answer}" id="inputAnswer" class="form-control" placeholder="Enter correct answer" required name="answer">
+
+        <label for="inputOptionA" class="sr-only" id="labelA">Option A</label><br>
+        <input type="text" th:field="*{optionA}" id="inputOptionA" class="form-control" placeholder="Enter option A" required name="optionA">
+
+        <label for="inputOptionB" class="sr-only" id="labelB">Option B</label><br>
+        <input type="text" th:field="*{optionB}" id="inputOptionB" class="form-control" placeholder="Enter option B" required name="optionB">
+
+        <label for="inputOptionC" class="sr-only" id="labelC">Option C</label><br>
+        <input type="text" th:field="*{optionC}" id="inputOptionC" class="form-control" placeholder="Enter option C" required name="optionC">
+
+        <label for="inputOptionD" class="sr-only" id="labelD">Option D</label><br>
+        <input type="text" th:field="*{optionD}" id="inputOptionD" class="form-control" placeholder="Enter option D" required name="optionD"><br>
+
+        <button class="btn btn-lg btn-success btn-block" type="submit">Create Question</button>
+        <p class="mt-5 mb-3 text-muted">&copy; 2020</p>
+    </form>
+</div>

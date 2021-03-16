@@ -1,7 +1,12 @@
 package com.mathworldofex.football_quiz.services.payment;
 
-import com.mathworldofex.football_quiz.payload.response.PaystackTranVerResponse;
-import org.springframework.beans.factory.annotation.Value;
+import com.mathworldofex.football_quiz.model.entity.Transaction;
+import com.mathworldofex.football_quiz.model.entity.User;
+import com.mathworldofex.football_quiz.model.payload.response.PaystackDataResponse;
+import com.mathworldofex.football_quiz.model.payload.response.PaystackTranVerResponse;
+import com.mathworldofex.football_quiz.model.repository.TransactionRepository;
+import com.mathworldofex.football_quiz.model.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -15,39 +20,46 @@ import java.util.Objects;
 
 @Service
 public class PaymentIntegrationService {
+    @Autowired
+    TransactionRepository transactionRepository;
+    @Autowired
+    UserRepository userRepository;
 
-
-    @Value("${mwe.app.jwtSecret}")
-    private String paymentApiSecret;
-    @Value("${paystack.verification.url}")
-    private String paymentVerificationUrl;
-
-    public Boolean paymentStatus() {
-        return true;
-    }
-
-    public boolean verifyPayment(String reference) throws URISyntaxException {
+    public boolean verifyPayment(String reference, String username) throws URISyntaxException {
         HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(paymentApiSecret);
-        HttpEntity<String> requestEntity = new HttpEntity<>(null, headers);
+
+        headers.add("Authorization", "Bearer sk_test_a1031c3904f6d2a3c288f5972f9f3d978275b79e");
+        HttpEntity<String> requestEntity = new HttpEntity<>(headers);
 
         RestTemplate template = new RestTemplate();
-        URI paymentUrl = new URI(paymentVerificationUrl + reference);
-        ResponseEntity<PaystackTranVerResponse> responseEntity =
-                template.exchange(paymentUrl, HttpMethod.GET, requestEntity, PaystackTranVerResponse.class);
-
-        return Objects.requireNonNull(responseEntity.getBody()).getData().getStatus().equalsIgnoreCase("success");
+        URI paymentUrl = new URI("https://api.paystack.co/transaction/verify/" + reference);
+        System.out.println("### Transaction Reference: " + reference);
+        ResponseEntity<PaystackTranVerResponse> responseEntity = template.exchange(
+                paymentUrl,
+                HttpMethod.GET,
+                requestEntity,
+                PaystackTranVerResponse.class
+        );
+        boolean transactionVerified = Objects.requireNonNull(responseEntity.getBody()).getData().getStatus().equalsIgnoreCase("success");
+        PaystackDataResponse transactionResponse = responseEntity.getBody().getData();
+        this.saveUserPayment(username, transactionResponse);
+        return transactionVerified;
     }
 
-    private ResponseEntity<PaystackTranVerResponse> postReference(String reference) {
-        String URI = paymentVerificationUrl + reference;
+    public void saveUserPayment(String username, PaystackDataResponse pmd) {
+        User user = userRepository.findByUsername(username).isPresent() ? userRepository.findByUsername(username).get() : new User();
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(Objects.requireNonNull(paymentApiSecret));
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-        RestTemplate restTemplate = new RestTemplate();
+        Transaction transaction = new Transaction(user, pmd.getDomain(), pmd.getStatus(),
+                pmd.getReference(), pmd.getAmount(), pmd.getMessage(),
+                pmd.getGatewayResponse(), pmd.getPaidAt(), pmd.getCreatedAt(),
+                pmd.getChannel(), pmd.getChannel(), pmd.getIpAddress());
 
-        return restTemplate.getForEntity(URI, PaystackTranVerResponse.class, entity);
+        try {
+            transactionRepository.save(transaction);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+
 
 }

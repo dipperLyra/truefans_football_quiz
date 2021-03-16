@@ -1,14 +1,14 @@
 package com.mathworldofex.football_quiz.controller;
 
-import com.mathworldofex.football_quiz.JwtUtils;
-import com.mathworldofex.football_quiz.enity.ERole;
-import com.mathworldofex.football_quiz.enity.Role;
-import com.mathworldofex.football_quiz.enity.User;
-import com.mathworldofex.football_quiz.payload.requests.LoginRequest;
-import com.mathworldofex.football_quiz.payload.requests.SignupRequest;
-import com.mathworldofex.football_quiz.repository.RoleRepository;
-import com.mathworldofex.football_quiz.repository.UserRepository;
-import com.mathworldofex.football_quiz.security.service.UserDetailsImpl;
+import com.mathworldofex.football_quiz.config.security.jwt.JwtUtils;
+import com.mathworldofex.football_quiz.model.entity.ERole;
+import com.mathworldofex.football_quiz.model.entity.Role;
+import com.mathworldofex.football_quiz.model.entity.User;
+import com.mathworldofex.football_quiz.model.payload.requests.LoginRequest;
+import com.mathworldofex.football_quiz.model.payload.requests.SignupRequest;
+import com.mathworldofex.football_quiz.model.repository.RoleRepository;
+import com.mathworldofex.football_quiz.model.repository.UserRepository;
+import com.mathworldofex.football_quiz.config.security.service.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,9 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -59,7 +57,7 @@ public class AuthController {
 
         final Cookie cookie = new Cookie("mwe_user", jwt);
         cookie.setPath("/");
-        cookie.setSecure(true);
+        //cookie.setSecure(true);
         cookie.setHttpOnly(true);
         response.addCookie(cookie);
         return new ModelAndView("index");
@@ -73,8 +71,13 @@ public class AuthController {
             return mav.addObject("message", "Error: Username is already taken!");
         if (userRepository.existsByEmail(signUpRequest.getEmail()))
             return mav.addObject("message", "Error: Email is already in use!");
+        setUser(signUpRequest, roleRepository.findByName(ERole.ROLE_UNPAID_USER).isPresent());
 
-        // Create new user's account
+        mav.addObject("messageHeader", "Sign up status");
+        return mav.addObject("message", "Successful: User created!");
+    }
+
+    private void setUser(SignupRequest signUpRequest, boolean exists) {
         User user = new User(
                 signUpRequest.getFirstname(),
                 signUpRequest.getLastname(),
@@ -82,15 +85,18 @@ public class AuthController {
                 signUpRequest.getEmail(),
                 encoder.encode(signUpRequest.getPassword()));
 
-        Set<Role> roles = new HashSet<>();
-        Role role = roleRepository.findByName(ERole.ROLE_UNPAID_USER)
-                .orElse(roleRepository.save(new Role(ERole.ROLE_UNPAID_USER)));
-        roles.add(role);
-        user.setRoles(roles);
-        userRepository.save(user);
+        setRoleAndStoreUser(exists, user);
+    }
 
-        mav.addObject("messageHeader", "Sign up status");
-        return mav.addObject("message", "Successful: User created!");
+    private void setRoleAndStoreUser(boolean exists, User user) {
+        if (exists) {
+            roleRepository.findByName(ERole.ROLE_UNPAID_USER).ifPresent(role -> {user.setRole(role); userRepository.save(user);});
+        } else {
+            Role role = new Role(ERole.ROLE_UNPAID_USER);
+            Role savedRole = roleRepository.save(role);
+            user.setRole(savedRole);
+            userRepository.save(user);
+        }
     }
 
 }
